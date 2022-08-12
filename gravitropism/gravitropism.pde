@@ -16,14 +16,39 @@ int T=0;
 int Tm=int(tm/dt);
 int TmA=int(tmA/dt);
 int TmC=int(tmC/dt);
-float L0=30;
-float L=1*L0;
 int fading=255;
 float[] gr={-1,32,-1,32};
 float[] grC={0,1,-1,1};
 float[] grgC={0,20,-1,1};
-int modec=0;
-int wri=1;
+
+
+// lengths
+//  L0 - length of the growth zone
+//  L  - initial length of plant
+float L0=30;
+float L=1*L0;
+
+// growth
+//  modec - growth mode
+//   0 - no growth
+//   1 - exponential
+//   2 - growth zone 
+//  g0 - growth rate
+int modec = 1;
+float g0 = 1;
+
+// gravitropic parameters
+float beta = 1;
+float gamma = 1;
+
+// write files
+//  wri - data
+//   0 - off
+//   1 - on
+//  wrif - images for movies
+//   0 - off
+//   1 - on
+int wri=0;
 int wrif=0;
 float tlim=1*tvideo;
 
@@ -57,7 +82,6 @@ void setup() {
 
   
   float ds0=L/(float)n;
-  float g0=1;
   if (wri==1)
   {
     Ctxt = createWriter("C.txt");
@@ -85,7 +109,7 @@ void setup() {
     float x0=i*ds0*sin(A0);
     float s0=i*ds0;
    float C0=0;
-    skel[i]= new Skel(A0,x0,y0,ds0,s0,g0,C0);
+    skel[i]= new Skel(A0,x0,y0,ds0,s0,g0,C0,beta,gamma);
     if (wri==1)
     {
       skel[i].write();
